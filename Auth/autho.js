@@ -1,14 +1,24 @@
-export const isAuthenticated(token)
+ const adminAuth =(req,res,next) =>
 {
-    const token = token ;
+    const token = "admin" ;
     const isAuthenticated = token == "admin" ;
-    if(isAuthenticated) {
-        res.send("  welcome to " + token + " . ALL Data are sent")
+    if(!isAuthenticated) {
+        res.status(401).send("You are not authenticated");
     }
     else{
-        res.status(401).send("You are not authenticated")
-    }
-    
+        next();
+    }    
 };
 
-module.exports{isAuthenticated}
+const userAuth = (req,res,next) => {
+    const token = "user";
+    const isUserAuth = token == "user";
+    if(!isUserAuth) {
+        res.status(401).send("You are not authenticated user");
+    }
+    else{
+        next();
+    }
+}
+
+module.exports = {adminAuth , userAuth}

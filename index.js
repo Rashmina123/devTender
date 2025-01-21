@@ -1,16 +1,14 @@
 const express = require('express');
+const {adminAuth} = require("./Auth/autho.js");
+const {userAuth} = require("./Auth/autho.js");
 const port = 3000;
 const app = express();
 
-app.use("/admin" , (req,res,next) =>{
-  console.log("admin auth is getting checked");
-  const token = req.params.token || "aaa";
-  const isAuthenticated = token ==="aaa";
-  if(!isAuthenticated){
-    res.status(401).send("UnAuthorized")
-  }
-  else{ next();}
-});
+
+app.use("/admin" , adminAuth);
+
+  
+
 
 app.use("/admin/getAllData",(req,res)=>{
   //check Authorization
@@ -22,4 +20,8 @@ app.use("/admin/DeleteUser",(req,res)=>{
   res.send('Deleted a User')
 })
 
+app.use("/user", userAuth);
+app.get('/user/getData' , (req,res) => {
+  res.send('UserData sent ');
+})
 app.listen(port,() => { console.log("server listen on port - " + port); }); 

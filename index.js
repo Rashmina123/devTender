@@ -1,20 +1,25 @@
-
-const express = require ("express");
-
-
+const express = require('express');
+const port = 3000;
 const app = express();
-app.use("/a",(req,res) => res.send("testing /a regex response"));
 
-app.use("/user",(req,res,next) => {
-    console.log("First respones")
-  //  res.send("First respones")
-  
-    next();
-    res.send("First response")
+app.use("/admin" , (req,res,next) =>{
+  console.log("admin auth is getting checked");
+  const token = req.params.token || "aaa";
+  const isAuthenticated = token ==="aaa";
+  if(!isAuthenticated){
+    res.status(401).send("UnAuthorized")
+  }
+  else{ next();}
+});
+
+app.use("/admin/getAllData",(req,res)=>{
+  //check Authorization
+ 
+res.send('AllData sent')
 })
-app.use("/test",(req,res) => {
-    console.log("First respones")
-    res.send("First  /respones")
+
+app.use("/admin/DeleteUser",(req,res)=>{
+  res.send('Deleted a User')
 })
- console.log("test response")
-app.listen(3000, ()=> console.log("Listening on http://localhost:3000  .. " ) );
+
+app.listen(port,() => { console.log("server listen on port - " + port); }); 

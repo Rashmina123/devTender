@@ -4,6 +4,7 @@
   "description": "git init\r git add README.md\r git commit -m \"first commit\"\r git branch -M main\r git remote add origin git@github.com:Rashmina123/devTender.git\r git push -u origin main",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

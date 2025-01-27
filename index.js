@@ -1,27 +1,28 @@
 const express = require('express');
-const {adminAuth} = require("./Auth/autho.js");
-const {userAuth} = require("./Auth/autho.js");
-const port = 3000;
+const dbConnection = require('./src/config/db');
+const port = 7777;
 const app = express();
+const User = require('./src/model/userModel');
 
+try{   
+    //  app.get('/user',(req,res) => res.send('get userData'));
 
-app.use("/admin" , adminAuth);
-
+  app.post('/signup', async(req,res)=>{
+      
+      const user = new User({fName:'Yasin',lName:'Gadhiya', password:'raas',email:'rashmina@gmail.com'});
+      await user.save();
+      res.send('user saved successfully')
+      console.log('User saved successfully');
   
+  })
+  } catch(err) {console.error(err);}
 
 
-app.use("/admin/getAllData",(req,res)=>{
-  //check Authorization
- 
-res.send('AllData sent')
-})
+dbConnection()
+    .then(() => {
+        app.listen(port, () => { console.log("server is listening on port - " + port); });
 
-app.use("/admin/DeleteUser",(req,res)=>{
-  res.send('Deleted a User')
-})
+        console.log('Database connected successfully.')
+     })
+      .catch((e) => {console.log('Error in db connection --- ' + e.message)})
 
-app.use("/user", userAuth);
-app.get('/user/getData' , (req,res) => {
-  res.send('UserData sent ');
-})
-app.listen(port,() => { console.log("server listen on port - " + port); }); 

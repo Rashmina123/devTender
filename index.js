@@ -51,11 +51,22 @@ app.delete('/delete',async(req,res) => {
 
 })
 //update by Id
-app.patch('/user',async(req,res)=>{
+app.patch('/user/:userId',async(req,res)=>{
     
-    const userId = req.body._id;
+  //  const userId = req.body._id;
+  const userId = req.params?.userId;
     const data = req.body;
     try{
+        //only those fiedls which you want to update
+        //restricted email - password etc.
+        const allowUpdate = ["_id","fName","lName","age","gender","skills"];
+        const isUpdatedAllow = Object.keys(data).every((k) => allowUpdate.includes(k));
+        console.log(Object.keys(data));
+        if(!isUpdatedAllow )
+        {
+            throw new Error(`User ${userId} is not allowed to update`);
+        }
+
        const user =  await User.findByIdAndUpdate(userId, data, {returnDocument:'after'});
       // console.log(userId,data);
        console.log(user)
